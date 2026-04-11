@@ -168,9 +168,61 @@
 
 ## 当前最值得先开工的三个任务
 
-- [ ] 任务 1：设计新的数据库 schema 草稿
-- [ ] 任务 2：设计 `order_item + transaction + order status`
+- [x] 任务 1：设计新的数据库 schema 草稿
+- [x] 任务 2：设计 `order_item + transaction + order status`
 - [ ] 任务 3：设计 `product tags + search`
+
+## 当前已确认的第一阶段范围
+
+这一阶段已经确定采用“重建一套更干净的新表结构，再逐步迁移逻辑”的路线，不走在旧表上小修小补的方案。
+
+### 第一阶段目标
+
+- [x] 以题目要求为准，重建核心 schema
+- [ ] 新 schema 主体命名统一使用 `vendor`
+- [x] 同步规划需要迁移的关键 Flask 路由
+- [ ] 暂时不优先处理页面美化
+- [ ] 暂时不优先处理 `PyMySQL` 切换
+
+### 第一阶段建议的新核心表
+
+- [x] `vendor`
+- [x] `customer`
+- [x] `product`
+- [x] `product_tag`
+- [x] `orders`
+- [x] `order_item`
+- [x] `transaction`
+
+### 第一阶段要解决的关键关系
+
+- [x] 一个 `vendor` 对应多个 `product`
+- [x] 一个 `product` 最多 3 个 `tag`
+- [x] 一个 `customer` 对应多个 `orders`
+- [x] 一个 `order` 对应多个 `order_item`
+- [x] 一个 `order` 可以跨多个 `vendor`
+- [x] 一个跨 vendor 的 `order` 可以拆成多条 `transaction`
+
+### 第一阶段要规划的关键路由
+
+- [x] 商品浏览路由
+- [x] 商品搜索路由
+- [ ] 加入购物车 / 准备下单路由
+- [x] 创建订单路由
+- [x] 修改订单路由
+- [x] 取消订单路由
+- [x] vendor 商品管理路由
+
+### 第一阶段完成标准
+
+- [x] 能画出新的 ER 图核心结构
+- [x] 能明确写出核心表字段和主外键关系
+- [x] 能说明旧路由哪些保留、哪些重写、哪些废弃
+- [x] 能把后续开发重点收敛到 `order_item / transaction / tags / search / order status`
+
+### 第一阶段已产出文件
+
+- [x] `vibhorag101-stage1-schema-design.md`
 
 ## 一句话结论
 
