@@ -9,7 +9,7 @@
 - 按 COMP7640 题目要求重建核心数据库 schema
 - 把命名从旧项目里的 `seller` 统一提升为 `vendor`
 - 明确旧系统中哪些 Flask 路由需要迁移、重写或废弃
-- 为后续实现 `multi-vendor order`、`transaction`、`tag search`、`order modification/cancellation` 打基础
+- 为后续实现 `multi-vendor order`、`vendor_transaction`、`tag search`、`order modification/cancellation` 打基础
 
 ## 第一阶段范围
 
@@ -45,7 +45,7 @@
 
 - 一个订单有多个订单项
 - 一个订单可跨多个 vendor
-- 一个订单可拆成多个 transaction
+- 一个订单可拆成多个 `vendor_transaction`
 - 每个订单项有明确数量、单价、所属 vendor
 
 ### 4. 尽量让报告、ER 图、代码三者一致
@@ -186,7 +186,7 @@
 - 订单项中显式保存 `vendor_id`，这样一个订单天然可跨多个 vendor
 - `quantity` 和 `subtotal` 解决旧项目中“数量不落库”的问题
 
-### 7. `transaction`
+### 7. `vendor_transaction`
 
 建议字段：
 
@@ -204,8 +204,8 @@
 
 说明：
 
-- 一个订单如果跨多个 vendor，可以生成多条 transaction
-- 每条 transaction 对应 customer 向某个 vendor 的支付记录
+- 一个订单如果跨多个 vendor，可以生成多条 `vendor_transaction`
+- 每条 `vendor_transaction` 对应 customer 向某个 vendor 的支付记录
 
 ## 关键业务关系
 
@@ -229,10 +229,10 @@
 - 一个 order 包含多个 order_item
 - 一个 order_item 只属于一个 order
 
-### 5. Orders 与 Transaction
+### 5. Orders 与 Vendor Transaction
 
-- 一个 order 可以对应多条 transaction
-- 每条 transaction 对应一个 vendor
+- 一个 order 可以对应多条 `vendor_transaction`
+- 每条 `vendor_transaction` 对应一个 vendor
 
 ### 6. Multi-vendor Order
 
@@ -245,7 +245,7 @@
 
 - `orders` 中 1 条订单主记录
 - `order_item` 中多条商品记录，分别带不同的 `vendor_id`
-- `transaction` 中至少 2 条记录，分别对应 vendor A 和 vendor B
+- `vendor_transaction` 中至少 2 条记录，分别对应 vendor A 和 vendor B
 
 ## 为什么不继续沿用旧表
 
@@ -254,7 +254,7 @@
 - `seller` 概念不够贴题
 - `associated_with` 不能表达订单项数量
 - `cart` 与订单的衔接依赖 Python 全局变量
-- 没有 transaction 独立建模
+- 没有独立的 vendor 级支付交易建模
 - 没有 tags
 - 没有明确 order status 生命周期
 
@@ -339,7 +339,7 @@
 
 - 创建 `orders`
 - 批量写入 `order_item`
-- 按 vendor 拆分并生成 `transaction`
+- 按 vendor 拆分并生成 `vendor_transaction`
 - 同步更新库存
 
 处理建议：
@@ -433,7 +433,7 @@
 - 新核心 schema 已经确定
 - 表之间主外键关系已确定
 - multi-vendor order 的数据表示方式已确定
-- transaction 的建模方式已确定
+- `vendor_transaction` 的建模方式已确定
 - tags 的建模方式已确定
 - 关键旧路由的迁移方向已确定
 
@@ -443,7 +443,7 @@
 
 1. 写新的 SQL schema
 2. 实现 `vendor / product / product_tag`
-3. 实现 `orders / order_item / transaction`
+3. 实现 `orders / order_item / vendor_transaction`
 4. 实现搜索
 5. 实现订单修改与取消
 
