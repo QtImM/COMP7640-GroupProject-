@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-  Welcome to Online Store
+  COMP7640 Marketplace
 {% endblock %}
 
 {% block content %}
@@ -69,7 +69,7 @@ margin-top: 25px;
   ">
       
     <div style= "flex: 1; vertical-align: top;  margin-right: 100px; vertical-align: top;  align-items: center; margin-left: 325px;">
-     <p style="font-size: 22px">PLEASE LOGIN ACCORDING TO YOUR CHOICE</p>
+     <p style="font-size: 22px">CHOOSE HOW YOU WANT TO USE THE MARKETPLACE</p>
     </div>
   
 </div>
@@ -83,25 +83,7 @@ margin-top: 25px;
     <div style="flex: 1; margin-left: 175px; margin-right: 100px; vertical-align: top;  align-items: center;">
     </div>
     <div style= "flex: 1; vertical-align: top;  margin-right: 100px; vertical-align: top;  align-items: center; margin-top: 6px;">
-      <a class="button" href="{{url_for('loginRegisterUser')}}">Enter as User</a>
-    </div>
-    <div style="flex: 2">
-
-    </div>
-  
-</div>
-<div style="
-  display: flex;
-  flex-direction: row;
-  margin-top: 25px;
-  justify-content: center;
-  margin-bottom: 45px;
-  ">
-      
-    <div style="flex: 1; margin-left: 170px; margin-right: 110px; vertical-align: top;  align-items: center;">
-    </div>
-    <div style= "flex: 1; vertical-align: top;  margin-right: 100px; vertical-align: top;  align-items: center; margin-top: 6px; ">
-      <a class="button" href="{{url_for('loginRegisterAdmin')}}">Enter as Admin</a>
+      <a class="button" href="{{url_for('loginRegisterUser')}}">Enter as Customer</a>
     </div>
     <div style="flex: 2">
 
@@ -119,7 +101,7 @@ margin-top: 25px;
     <div style="flex: 1; margin-left: 170px; margin-right: 95px; vertical-align: top;  align-items: center;">
     </div>
     <div style= "flex: 1; vertical-align: top;  margin-right: 55px; vertical-align: top;  align-items: center; margin-top: 0px; ">
-      <a class="button" href="{{url_for('loginRegisterSeller')}}">Enter as Seller</a>
+      <a class="button" href="{{url_for('loginRegisterSeller')}}">Enter as Vendor</a>
     </div>
     <div style="flex: 2">
     </form>

@@ -260,3 +260,22 @@
 ## 一句话结论
 
 如果你们想最快把这个项目改造成符合题目的版本，最先不要碰页面美化，也不要先纠结 `PyMySQL`，而是优先把 `订单结构、跨 vendor、transaction、库存、tags、搜索、订单修改/取消` 这几个数据库和业务核心补齐。
+## 第三阶段当前进度
+
+- [x] 已清理旧 admin 入口与旧 grocery/admin 模板引用
+- [x] 已删除不再使用的 admin 相关模板文件
+- [x] 已将首页文案统一为 marketplace / customer / vendor 叙事
+- [x] 已重写 README，使其匹配当前本机 MySQL + marketplace 项目
+- [x] 已完成一次真实运行验证
+  - `/` 返回 200
+  - `/loginRegisterUser` 返回 200
+  - `/loginRegisterSeller` 返回 200
+  - `/home/1` 返回 200
+  - `/myOrders/1` 返回 200
+- [x] 已修复运行时数据库连接问题，当前 Flask 可直接连接本机 `comp7640_marketplace`
+
+### 第三阶段下一步
+
+- [ ] 继续清理遗留旧业务文案与无用文件
+- [ ] 评估是否把数据库访问层进一步统一到 `PyMySQL`
+- [ ] 补更完整的端到端下单与订单修改验证

@@ -489,98 +489,6 @@ def remove_marketplace_order_item(order_id, order_item_id):
     cur.close()
     return True
 
-@app.route('/admin/<admin_id>')
-def adminRedirect(admin_id):
-    return render_template('adminOption.html',admin_id=admin_id)
-
-@app.route('/adminOrder/<admin_id>',methods=['GET', 'POST'])
-def adminViewOrder(admin_id):
-    my_list =[]
-    cur = my_sql.connection.cursor()
-    order_list = cur.execute("SELECT * FROM orders")
-    if order_list>0:
-        order_all = cur.fetchall()
-        for order in order_all:
-            temp_dict = {}
-            for index in range(11):
-                if(index==0):
-                    temp_dict['Order_ID']=order[0]
-                elif(index==1):
-                    temp_dict['Mode']=order[1]
-                elif(index==2):
-                    temp_dict['Amount']=order[2]
-                elif(index==9):
-                    temp_dict['Date']=order[9]
-            my_list.append(temp_dict)
-    if request.method=='POST':
-        return redirect('/admin/'+str(admin_id))
-    return render_template('viewOrder.html',list=my_list)
-
-@app.route('/adminOffer/<admin_id>',methods=['GET', 'POST'])
-def adminAddOffer(admin_id):
-    if request.method=='POST':
-        offerDetails = request.form
-        PC = offerDetails['Promo_Code']
-        PD = offerDetails['Percentage_Discount']
-        min_orderval = offerDetails['Min_OrderValue']
-        max_discount = offerDetails['Max_Discount']
-        cur = my_sql.connection.cursor()
-        cur.execute("INSERT INTO offer(Promo_Code,Percentage_Discount,Min_OrderValue,Max_Discount,admin_id) VALUES(%s, %s, %s, %s,%s)",(PC,PD,min_orderval,max_discount,admin_id))
-        flash('You have successfully added a Offer !')
-        my_sql.connection.commit()
-        cur.close()
-    return render_template('addOffer.html',admin_id=admin_id)
-
-@app.route('/adminDelivery_boy/<admin_id>',methods=['GET', 'POST'])
-def adminAdd_Delivery_Boy(admin_id):
-    if request.method=='POST':
-        delivery_boy_Details = request.form
-        First_Name = delivery_boy_Details['First_Name']
-        Last_Name = delivery_boy_Details['Last_Name']
-        Mobile_No = delivery_boy_Details['Mobile_No']
-        Email = delivery_boy_Details['Email']
-        Password = delivery_boy_Details['Password']
-        cur = my_sql.connection.cursor()
-        cur.execute("INSERT INTO delivery_boy(First_Name,Last_Name,Mobile_No,Email,Password,Average_Rating,Admin_ID) VALUES(%s, %s, %s, %s, %s,%s,%s)",(First_Name,Last_Name,Mobile_No,Email,Password,None,admin_id))
-        flash('You have successfully added a delivery boy !')
-        my_sql.connection.commit()
-        cur.close()
-    return render_template('addDelivery.html',admin_id=admin_id)
-
-@app.route('/adminSeller/<admin_id>',methods=['GET', 'POST'])
-def adminAdd_Seller(admin_id):
-    if request.method=='POST':
-        Seller_Details = request.form
-        First_Name = Seller_Details['First_Name']
-        Last_Name = Seller_Details['Last_Name']
-        Email = Seller_Details['Email']
-        Phone_Number = Seller_Details['Phone_Number']
-        Password = Seller_Details['Password']
-        Place_Of_Operation = Seller_Details['Place_Of_Operation']
-        cur = my_sql.connection.cursor()
-        cur.execute("INSERT INTO seller(First_Name,Last_Name,Email,Phone_Number,Password,Place_Of_Operation,Admin_ID) VALUES(%s, %s, %s, %s, %s,%s,%s)",(First_Name,Last_Name,Email,Phone_Number,Password,Place_Of_Operation,admin_id))
-        flash('You have successfully added a seller !')
-        my_sql.connection.commit()
-        cur.close()
-    return render_template('addSeller.html',admin_id=admin_id)
-
-@app.route('/adminProduct/<admin_id>',methods=['GET', 'POST'])
-def adminAdd_Product(admin_id):
-    if request.method=='POST':
-        Product_Details = request.form
-        Name = Product_Details['Name']
-        Price = Product_Details['Price']
-        Brand= Product_Details['Brand']
-        Measurement = Product_Details['Measurement']
-        Category_ID = Product_Details['Category_ID']
-        Unit = Product_Details['Unit']
-        cur = my_sql.connection.cursor()
-        cur.execute("INSERT INTO product(Name,Price,Brand,Measurement,Admin_ID,Category_ID,Unit) VALUES(%s, %s, %s, %s, %s,%s,%s)",(Name,Price,Brand,Measurement,admin_id,Category_ID,Unit))
-        flash('You have successfully added a Product !')
-        my_sql.connection.commit()
-        cur.close()
-    return render_template('addNewProducts.html',admin_id=admin_id)
-
 @app.route('/sell/<seller_id>',methods=['GET', 'POST'])
 def sell(seller_id):
     product_list = get_vendor_products(seller_id)
@@ -642,12 +550,9 @@ def userEnter(user_id):
     search_term = request.args.get("q", "").strip()
     my_list = get_marketplace_products(search_term or None)
     if request.method=='POST':
-        cur = my_sql.connection.cursor()
-        OID = 3
-        f_amt = total_val
-        cur.execute("INSERT INTO cart(Cart_ID,Total_Value,Total_Count,Offer_ID,Final_Amount) VALUES(%s, %s, %s, %s, %s)",(cart_id,total_val,total_count,OID,f_amt))
-        my_sql.connection.commit()
-        cur.close()
+        if not customer_cart_list:
+            flash('Your cart is empty.')
+            return render_template('home.html',list=my_list, search_term=search_term)
         url_direct = '/order'+'/'+str(user_id)
         return redirect(url_direct)
     else:
@@ -704,11 +609,7 @@ def loginRegisterSeller():
 @app.route('/loginRegisterUser')
 def loginRegisterUser():
     return render_template('loginregisterUser.html')
-
-@app.route('/loginRegisterAdmin')
-def loginRegisterAdmin():
-    return render_template('loginregisterAdmin.html')
-
+    
 @app.route('/placeOrder/<user_id>',methods=['GET','POST'])
 def order_placing(user_id):
     global total_val
@@ -761,20 +662,6 @@ def customerRegister():
         flash('You have registered successfully !')
     return render_template('customerRegister.html')
 
-@app.route('/adminRegister',methods=['GET','POST'])
-def adminRegister():
-    if request.method=='POST':
-        custDetails = request.form
-        First_Name = custDetails['First_Name']
-        Last_Name = custDetails['Last_Name']
-        Password = custDetails['Password']
-        cur = my_sql.connection.cursor()
-        cur.execute("INSERT INTO admin(First_Name,Last_Name,Admin_Password) VALUES(%s, %s, %s)",(First_Name,Last_Name,Password))
-        flash('You have registered successfully !')
-        my_sql.connection.commit()
-        cur.close()
-    return render_template('adminRegister.html')
-
 @app.route('/sellerRegister',methods=['GET','POST'])
 def sellerRegister():
     if request.method=='POST':
@@ -803,29 +690,6 @@ def UserLogin():
             url_direct = '/home'+'/'+str(c_tup[0])
             return redirect(url_direct)
     return render_template('UserLogin.html')
-
-@app.route('/AdminLogin',methods=['GET','POST'])
-def AdminLogin():
-    if request.method=='POST':
-        userDetail = request.form
-        First_Name = userDetail['First_Name']
-        Last_Name = userDetail['Last_Name']
-        Password = userDetail['Password']
-        cur = my_sql.connection.cursor()
-        cust_list = cur.execute("SELECT * FROM admin")
-        if cust_list>0:
-            cust_all = cur.fetchall()
-            c_tup = ()
-            for tup in cust_all:
-                if(tup[1]==First_Name and tup[2]==Last_Name):
-                    c_tup = tup
-                    break
-            if c_tup==() or Password!=c_tup[3]:
-                flash('Invalid Email or Password')
-            else:
-                url_direct = '/admin'+'/'+str(c_tup[0])
-                return redirect(url_direct)
-    return render_template('AdminLogin.html')
 
 @app.route('/SellerLogin',methods=['GET','POST'])
 def SellerLogin():
