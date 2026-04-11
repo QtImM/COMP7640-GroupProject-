@@ -8,7 +8,7 @@
 <div style="max-width: 30%;">
 <form method ="POST" action="">
   <h1 class="text-center">
-    Enter Product Details
+    Vendor Product Panel
   </h1>
     
     <div class="form-group" style="padding-top: 10px;">
@@ -16,15 +16,49 @@
       name = "Name">
     </div>
     <div class="form-group" >
-      <input class="form-control" id="exampleInputPassword1" placeholder="Brand" name="Brand">
+      <input class="form-control" id="exampleInputPassword1" placeholder="Listed Price" name="Price">
     </div>
     <div class="form-group" >
-        <input class="form-control" id="exampleInputPassword1" placeholder="Quantity to Add" name="Quantity">
-      </div>
+      <input class="form-control" id="exampleInputPassword1" placeholder="Stock Quantity" name="Quantity">
+    </div>
+    <div class="form-group" >
+      <input class="form-control" id="exampleInputPassword1" placeholder="Description" name="Description">
+    </div>
+    <div class="form-group" >
+      <input class="form-control" id="exampleInputPassword1" placeholder="Tags (comma separated, max 3)" name="Tags">
+    </div>
   <div class="text-center">
     <button type="submit" class="btn btn-primary">Submit</button>
   </div>
   </form>
+
+  {% if products %}
+  <div class="mt-5">
+    <h3 class="text-center">Current Vendor Inventory</h3>
+    <table class="table table-dark table-striped mt-3">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Stock</th>
+          <th>Tags</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in products %}
+        <tr>
+          <td>{{ product.Name }}</td>
+          <td>{{ product.Price }}</td>
+          <td>{{ product.Stock }}</td>
+          <td>{{ product.Tags | join(', ') }}</td>
+          <td>{{ product.Status }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
 </div>
 </div>
 {% endblock %}

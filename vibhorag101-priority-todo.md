@@ -230,6 +230,33 @@
 
 - [x] 第一阶段完成
 
+## 当前进度补充
+
+- [x] 已在本机 MySQL 中创建数据库 `comp7640_marketplace`
+- [x] 已在本机 MySQL 中创建 7 张核心表
+- [x] 已执行第一批 sample data
+- [ ] 下一步进入第二阶段代码接入
+
+## 第二阶段当前进度
+
+- [x] 已新增基于新 schema 的 sample data SQL
+- [x] 已把商品浏览页开始接到 `vendor / product / product_tag`
+- [x] 已加上按商品名或 tag 搜索的基础逻辑
+- [x] 已补最小测试覆盖新商品列表与搜索查询
+- [x] 已把 vendor 注册 / 登录开始接到新 `vendor` 表
+- [x] 已把 vendor 商品管理页开始接到 `product / product_tag`
+- [x] 已把 customer 注册 / 登录开始接到新 `customer` 表
+- [x] 已把订单创建开始接到新 `orders / order_item / vendor_transaction`
+- [x] 已补“我的订单”页面基础结构
+- [x] 已把订单取消开始接到新 schema
+- [x] 已把删除订单项开始接到新 schema
+- [x] 已把项目数据库连接切到本机 `comp7640_marketplace`
+
+### 第二阶段阶段性状态
+
+- [x] 第二阶段核心代码接入完成
+- [ ] 后续仍可继续补更完整的 UI、异常处理和权限控制
+
 ## 一句话结论
 
 如果你们想最快把这个项目改造成符合题目的版本，最先不要碰页面美化，也不要先纠结 `PyMySQL`，而是优先把 `订单结构、跨 vendor、transaction、库存、tags、搜索、订单修改/取消` 这几个数据库和业务核心补齐。

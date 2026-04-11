@@ -6,7 +6,7 @@ app = Flask(__name__)
 app.secret_key = "this@is@my@secret"
 
 # Configure database
-db = yaml.load (open('database.yaml'))
+db = yaml.safe_load(open('database.yaml'))
 app.config['MYSQL_HOST'] = db['mysql_host']
 app.config['MYSQL_USER'] = db['mysql_user']
 app.config['MYSQL_PASSWORD'] = db['mysql_password']

@@ -2,6 +2,13 @@
 {% extends 'base.html' %} {% block title %} Welcome to onlineStore {% endblock
 %} {% block content %}
 <div class="container-fuild">
+  <div class="row" style="margin: 15px 20px 0 20px;">
+    <div class="col-12">
+      <p class="text-light">
+        Marketplace products{% if search_term %} for "{{ search_term }}"{% endif %}
+      </p>
+    </div>
+  </div>
   <div class="row" style="margin-left: 20px;">
     <!-- {% set userID = userID %} -->
     {% for dict in list%}
@@ -10,12 +17,14 @@
         <img class="card-img-top" src="https://picsum.photos/100" alt="Card image cap"/>
         <div class="card-body">
           <h5 class="card-title text-primary">Name: {{dict.Name}}</h5>
-          <h5 class="card-title text-success">Brand: {{dict.Brand}}</h5>
+          <h5 class="card-title text-success">Vendor: {{dict.Vendor}}</h5>
           <h5 class="card-title text-danger">Price: RS {{dict.Price}}</h5>
+          <h6 class="card-title text-warning">Stock: {{dict.Stock}}</h6>
+          <p class="card-text text-dark" style="min-height: 48px;">{{dict.Description}}</p>
+          <p class="card-text text-secondary">Tags: {{dict.Tags | join(', ') }}</p>
           <form action="" method="GET">
-            <input type="hidden" name="Name" value="{{dict.Name}}">
-            <input type="hidden" name="Brand" value="{{dict.Brand}}">
-            <input type="hidden" name="Price" value="{{dict.Price}}">
+            <input type="hidden" name="product_id" value="{{dict.ProductID}}">
+            <input type="hidden" name="q" value="{{search_term}}">
             <button type="submit" class="btn btn-primary">Add to Cart</button>
           </form>
           <!-- <a href="#" class="btn btn-primary">Add to Cart</a> -->
@@ -27,7 +36,11 @@
   {% endblock %}
 
   {% block navBar %}
-  <form class="form-inline my-2 my-lg-0" method="POST",action="">
+  <form class="form-inline my-2 my-lg-0 mr-2" method="GET" action="">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search by name or tag" name="q" value="{{search_term}}">
+    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+  </form>
+  <form class="form-inline my-2 my-lg-0" method="POST" action="">
     <button class="btn btn-outline-success my-2 my-sm-0 text-light bg-dark" type="submit">My Cart</button>
   </form>
   {% endblock %}

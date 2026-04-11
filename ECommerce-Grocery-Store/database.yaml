@@ -1,4 +1,4 @@
-mysql_host : 'localhost'
+mysql_host : '127.0.0.1'
 mysql_user: 'root'
-mysql_password : '9317'
-mysql_db : 'online_store'
+mysql_password : 'qt61324256'
+mysql_db : 'comp7640_marketplace'

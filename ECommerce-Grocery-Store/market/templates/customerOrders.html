@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}
+  My Orders
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h1 class="mb-4">My Marketplace Orders</h1>
+  {% if orders %}
+    {% for order in orders %}
+    <div class="card bg-dark text-white mb-4">
+      <div class="card-body">
+        <h4>Order #{{ order.OrderID }}</h4>
+        <p>Status: <span class="text-warning">{{ order.Status }}</span></p>
+        <p>Total: HKD {{ order.TotalPrice }}</p>
+        <p>Ship To: {{ order.ShippingAddress }}</p>
+        <table class="table table-dark table-striped">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Vendor</th>
+              <th>Qty</th>
+              <th>Subtotal</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in order.Items %}
+            <tr>
+              <td>{{ item.Name }}</td>
+              <td>{{ item.Vendor }}</td>
+              <td>{{ item.Quantity }}</td>
+              <td>{{ item.Subtotal }}</td>
+              <td>
+                {% if order.CanModify and item.Status != 'cancelled' %}
+                <form method="POST" action="/removeOrderItem/{{ user_id }}/{{ order.OrderID }}/{{ item.OrderItemID }}">
+                  <button type="submit" class="btn btn-sm btn-outline-warning">Remove Item</button>
+                </form>
+                {% else %}
+                <span class="text-muted">Locked</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% if order.CanModify %}
+        <form method="POST" action="/cancelOrder/{{ user_id }}/{{ order.OrderID }}">
+          <button type="submit" class="btn btn-danger">Cancel Order</button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <p>You have no marketplace orders yet.</p>
+  {% endif %}
+</div>
+{% endblock %}
