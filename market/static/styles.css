@@ -1,0 +1,492 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800;900&display=swap');
+
+:root {
+    /* Bakehouse Aesthetic Palette */
+    --bh-primary: #8B5A2B;      /* Rich Earthy Brown */
+    --bh-tan: #D2B48C;          /* Warm Tan */
+    --bh-gold: #E8A317;         /* Baked Gold */
+    --bh-nav-gold: #E0B36E;     /* Signature Nav Accent */
+    --bh-bg: #FDF8F3;           /* Soft Cream */
+    --bh-white: #ffffff;
+    --bh-text: #2D241E;         /* Dark Coffee Text */
+    --bh-muted: #8E847C;
+    
+    /* Component Language */
+    --radius-bh: 24px;          /* Artisanal Roundness */
+    --shadow-bh: 0 10px 30px rgba(139, 90, 43, 0.08);
+    --shadow-bh-hover: 0 20px 50px rgba(139, 90, 43, 0.12);
+    --blur-bh: blur(10px);
+}
+
+/* ====== Role-Based Color Systems ====== */
+/* Customer: Warm Green tones */
+body.customer-mode { --role-accent: #2E7D32; --role-accent-light: #E8F5E9; --role-accent-glow: rgba(46,125,50,0.15); }
+/* Vendor: Professional Blue tones */
+body.vendor-mode  { --role-accent: #1565C0; --role-accent-light: #E3F2FD; --role-accent-glow: rgba(21,101,192,0.15); }
+
+/* Navbar top-border reacts to role */
+body.customer-mode .market-nav { border-top-color: #2E7D32; }
+body.vendor-mode  .market-nav { border-top-color: #1565C0; }
+
+/* ── Role Badge (pill in navbar) ── */
+.role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 6px 16px;
+    border-radius: 999px;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    animation: badgePulse 2s ease-in-out;
+}
+.role-badge-customer {
+    background: #E8F5E9;
+    color: #2E7D32;
+    border: 1.5px solid rgba(46,125,50,0.25);
+}
+.role-badge-vendor {
+    background: #E3F2FD;
+    color: #1565C0;
+    border: 1.5px solid rgba(21,101,192,0.25);
+}
+@keyframes badgePulse {
+    0%   { opacity: 0; transform: scale(0.9); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* ── Vendor Dashboard Dark Theme ── */
+.vendor-dashboard-shell {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    border-radius: var(--radius-bh);
+    padding: 50px 40px;
+    margin: -20px -20px 30px -20px;
+    color: #e0e0e0;
+}
+.vendor-dashboard-shell h1,
+.vendor-dashboard-shell h2,
+.vendor-dashboard-shell h3 {
+    color: #ffffff;
+}
+.vendor-dashboard-shell .text-muted {
+    color: rgba(255,255,255,0.6) !important;
+}
+.vendor-stat-card {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+.vendor-stat-card:hover {
+    background: rgba(255,255,255,0.12);
+    transform: translateY(-3px);
+}
+.vendor-stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1;
+}
+.vendor-stat-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 8px;
+}
+/* Blue accent buttons for vendor */
+body.vendor-mode .btn-luxury {
+    background: #1565C0;
+    box-shadow: 0 4px 15px rgba(21,101,192,0.25);
+}
+body.vendor-mode .btn-luxury:hover {
+    background: #0D47A1;
+    box-shadow: 0 8px 25px rgba(21,101,192,0.35);
+}
+body.vendor-mode .btn-primary-action {
+    background: #1565C0;
+    box-shadow: 0 5px 15px rgba(21,101,192,0.2);
+}
+body.vendor-mode .btn-primary-action:hover {
+    background: #0D47A1;
+}
+body.vendor-mode .auth-card {
+    border-top-color: #1565C0;
+}
+body.vendor-mode .field-label {
+    color: #1565C0;
+}
+body.vendor-mode .form-title {
+    color: #1565C0;
+}
+/* Green accent buttons for customer */
+body.customer-mode .btn-luxury {
+    background: var(--bh-gold);
+}
+body.customer-mode .auth-card {
+    border-top-color: #2E7D32;
+}
+
+/* Base Foundation */
+* {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    background: var(--bh-bg);
+    color: var(--bh-text);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    min-height: 100vh;
+}
+
+h1, h2, h3, h4, .brand-main {
+    font-family: 'Playfair Display', serif;
+    font-weight: 800;
+}
+
+/* Global Transitions */
+a, button, .luxury-card {
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+/* 🥖 The Bakehouse Navbar (100px with Gold Top Border) */
+.market-nav {
+    background: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: var(--blur-bh);
+    border-top: 5px solid var(--bh-nav-gold);
+    border-bottom: 1px solid rgba(139, 90, 43, 0.08);
+    height: 100px;
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.brand-main {
+    color: var(--bh-primary);
+    font-size: 1.8rem;
+    letter-spacing: -0.5px;
+}
+
+.brand-sub {
+    color: var(--bh-gold);
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-left: 8px;
+}
+
+.navbar-brand:hover .brand-main {
+    color: var(--bh-gold);
+}
+
+.nav-link {
+    color: var(--bh-text) !important;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0 1.5rem !important;
+}
+
+.nav-link:hover {
+    color: var(--bh-gold) !important;
+}
+
+/* 🍞 Bakehouse Product Cards */
+.market-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.luxury-card {
+    background: var(--bh-white);
+    border-radius: var(--radius-bh);
+    border: 1px solid rgba(139, 90, 43, 0.05);
+    box-shadow: var(--shadow-bh);
+    overflow: hidden;
+}
+
+.luxury-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-bh-hover);
+}
+
+.luxury-card .card-body {
+    padding: 25px;
+}
+
+.vendor-tag {
+    color: var(--bh-gold);
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.product-name {
+    font-size: 1.5rem;
+    margin: 10px 0;
+}
+
+.price {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    color: var(--bh-primary);
+}
+
+/* 🥯 Bakehouse Buttons (Gold Pill Variants) */
+.btn-luxury {
+    background: var(--bh-gold);
+    color: var(--bh-white);
+    border-radius: 999px;
+    padding: 12px 30px;
+    font-weight: 700;
+    border: none;
+    box-shadow: 0 4px 15px rgba(232, 163, 23, 0.2);
+}
+
+.btn-luxury:hover {
+    background: var(--bh-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(139, 90, 43, 0.3);
+}
+
+/* 🍯 Search Bar */
+.glass-search {
+    background: var(--bh-white);
+    border: 1px solid var(--bh-tan);
+    height: 60px;
+    border-radius: 999px;
+    padding: 0 30px;
+    width: 100%;
+    box-shadow: 0 4px 20px rgba(139, 90, 43, 0.05);
+}
+
+.glass-search:focus {
+    outline: none;
+    border-color: var(--bh-gold);
+    box-shadow: 0 8px 30px rgba(232, 163, 23, 0.15);
+}
+
+/* 🍓 Hero Section */
+.hero-wrap {
+    background: #fff;
+    padding: 80px 0;
+    text-align: center;
+}
+
+.hero-title {
+    font-size: 4.5rem;
+    line-height: 1.1;
+    margin-bottom: 20px;
+}
+
+.title-gradient {
+    color: var(--bh-primary);
+}
+
+/* 🍩 Layout Shell */
+.market-shell {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.section-head {
+    margin-bottom: 50px;
+}
+
+/* 🧺 Authentication Modals */
+.auth-wrapper {
+    background: var(--bh-bg);
+    padding: 40px 0; /* Reduced from 60px */
+}
+
+/* Authentication Forms (Classic Bakehouse Style) */
+.auth-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.auth-card {
+    background: var(--bh-white);
+    padding: 40px;
+    border-radius: var(--radius-bh);
+    box-shadow: var(--shadow-bh);
+    width: 100%;
+    max-width: 550px;
+    border-top: 5px solid var(--bh-primary);
+}
+
+.auth-title {
+    font-size: 2.2rem;
+    color: var(--bh-primary);
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.auth-subtitle {
+    color: var(--bh-muted);
+    text-align: center;
+    margin-bottom: 35px;
+    font-size: 0.95rem;
+}
+
+.field-label {
+    display: block;
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--bh-primary);
+    margin-bottom: 8px;
+    padding-left: 5px;
+}
+
+.market-input {
+    width: 100%;
+    height: 50px;
+    background: #fbf8f5;
+    border: 1px solid rgba(139, 90, 43, 0.1);
+    border-radius: 12px;
+    padding: 0 20px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.market-input:focus {
+    outline: none;
+    background: white;
+    border-color: var(--bh-gold);
+    box-shadow: 0 0 0 4px rgba(232, 163, 23, 0.1);
+}
+
+.btn-primary-action {
+    background: var(--bh-primary);
+    color: white;
+    border-radius: 999px;
+    padding: 15px;
+    font-weight: 700;
+    border: none;
+    margin-top: 15px;
+    box-shadow: 0 5px 15px rgba(139, 90, 43, 0.2);
+    cursor: pointer;
+}
+
+.btn-primary-action:hover {
+    background: var(--bh-gold);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(232, 163, 23, 0.3);
+}
+
+.frosted-box {
+    background: var(--bh-white);
+    padding: 50px;
+    border-radius: var(--radius-bh);
+    box-shadow: var(--shadow-bh);
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.form-title {
+    font-size: 2.2rem;
+    color: var(--bh-primary);
+}
+
+/* 🧾 Vendor Console */
+.dashboard-card {
+    background: var(--bh-white);
+    border-radius: var(--radius-bh);
+    padding: 30px;
+    box-shadow: var(--shadow-bh);
+}
+
+.table-hover tbody tr:hover {
+    background-color: var(--bh-bg);
+}
+
+/* 🥖 Split Hero Logic (Bakehouse Proportions) */
+.hero-split {
+    display: flex;
+    align-items: center;
+    min-height: 60vh;
+    gap: 60px;
+}
+
+.hero-left {
+    flex: 1;
+    text-align: left;
+}
+
+.hero-right {
+    flex: 1;
+    position: relative;
+    border-radius: var(--radius-bh);
+    overflow: hidden;
+    box-shadow: var(--shadow-bh-hover);
+    height: 540px;
+}
+
+.hero-right img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: sepia(0.2) contrast(1.1);
+}
+
+.split-title {
+    font-size: 4rem;
+    line-height: 1.1;
+    margin-bottom: 25px;
+    color: var(--bh-primary);
+}
+
+/* 🥯 Portal Grid Adjustments */
+.portal-entry-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    margin-top: 60px;
+}
+
+.portal-tag {
+    background: rgba(139, 90, 43, 0.05);
+    color: var(--bh-primary);
+    padding: 6px 15px;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+@media (max-width: 992px) {
+    .hero-split {
+        flex-direction: column;
+        text-align: center;
+    }
+    .hero-left {
+        text-align: center;
+    }
+    .hero-right {
+        height: 400px;
+        width: 100%;
+    }
+    .split-title {
+        font-size: 2.8rem;
+    }
+}

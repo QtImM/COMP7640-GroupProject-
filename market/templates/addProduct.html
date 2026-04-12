@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% block title %}{{ t('nav_studio') }} | BU Marketplace{% endblock %}
+
+{% block content %}
+<!-- ── Vendor Dark Dashboard Header ── -->
+<div class="vendor-dashboard-shell fade-in">
+  <div class="d-flex justify-content-between align-items-start mb-4">
+    <div>
+      <span class="role-badge role-badge-vendor mb-3 d-inline-block">🏪 {{ t('role_vendor') }}</span>
+      <h1 class="display-4 font-weight-bold mt-2" style="font-family: 'Playfair Display', serif;">{{ business_name }}</h1>
+      <p class="text-muted lead">{{ t('artisan_desc') }}</p>
+    </div>
+  </div>
+  <div class="row mt-4" style="gap: 0;">
+    <div class="col-md-4 mb-3">
+      <div class="vendor-stat-card">
+        <div class="vendor-stat-number">{{ products|length }}</div>
+        <div class="vendor-stat-label">{{ t('active_units') }}</div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <a href="{{ url_for('vendorOrders', vendor_id=vendor_id) }}" class="vendor-stat-card d-block text-decoration-none" style="cursor: pointer;">
+        <div class="vendor-stat-number" style="color: #64B5F6;">→</div>
+        <div class="vendor-stat-label">{{ t('nav_fulfillment') }}</div>
+      </a>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="vendor-stat-card">
+        <div class="vendor-stat-number" style="color: #81C784;">✓</div>
+        <div class="vendor-stat-label">{{ t('studio_health') }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<section class="section-block vendor-layout fade-in">
+  <div class="row fade-in">
+    <div class="col-lg-8">
+      <div class="frosted-box shadow-sm mb-4 border" style="max-width: 100%; background: var(--bh-white);">
+        <h3 class="font-weight-bold mb-4" style="font-family: 'Playfair Display', serif; color: var(--bh-primary);">{{ t('catalog_unit') }}</h3>
+        <form method="POST" action="">
+          <div class="row">
+            <div class="col-md-6 mb-4">
+              <label class="field-label text-uppercase small font-weight-bold" style="color: var(--bh-primary); letter-spacing: 1px;">{{ t('product_label') }}</label>
+              <input id="vendor-product-name" class="glass-search" style="border-radius: 12px; height: 50px;" name="Name" placeholder="e.g. Sourdough Loaf" required>
+            </div>
+            <div class="col-md-3 mb-4">
+              <label class="field-label text-uppercase small font-weight-bold" style="color: var(--bh-primary); letter-spacing: 1px;">{{ t('valuation') }}</label>
+              <input id="vendor-product-price" class="glass-search" style="border-radius: 12px; height: 50px;" name="Price" placeholder="0.00" required>
+            </div>
+            <div class="col-md-3 mb-4">
+              <label class="field-label text-uppercase small font-weight-bold" style="color: var(--bh-primary); letter-spacing: 1px;">{{ t('availability') }}</label>
+              <input id="vendor-product-stock" class="glass-search" style="border-radius: 12px; height: 50px;" name="Quantity" placeholder="0" required>
+            </div>
+          </div>
+
+          <div class="form-group mb-4">
+            <label class="field-label text-uppercase small font-weight-bold" style="color: var(--bh-primary); letter-spacing: 1px;">{{ t('artisanal_narrative') }}</label>
+            <input id="vendor-product-description" class="glass-search" style="border-radius: 12px; height: 50px;" name="Description" placeholder="...">
+          </div>
+
+          <div class="form-group mb-4">
+            <label class="field-label text-uppercase small font-weight-bold" style="color: var(--bh-primary); letter-spacing: 1px;">{{ t('discovery_taxonomy') }}</label>
+            <input id="vendor-product-tags" class="glass-search" style="border-radius: 12px; height: 50px;" name="Tags" placeholder="...">
+          </div>
+
+          <button type="submit" class="btn-luxury px-5 mt-2">{{ t('publish_btn') }}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="mt-5 fade-in">
+  <div class="section-head text-left mb-4">
+    <h2 class="font-weight-bold h3" style="font-family: 'Playfair Display', serif; color: var(--bh-primary);">{{ t('perm_collection') }}</h2>
+    <p class="text-muted">{{ t('artisan_sub') }}</p>
+  </div>
+  
+  {% if products %}
+  <div class="luxury-card p-0 overflow-hidden shadow-sm" style="border: 1px solid rgba(139, 90, 43, 0.08); background: var(--bh-white);">
+    <table class="table table-hover mb-0">
+      <thead style="background: #fbf8f5;">
+        <tr class="text-muted small text-uppercase letter-spacing-1 font-weight-bold">
+          <th class="border-0 py-4 pl-4">{{ t('identification') }}</th>
+          <th class="border-0 py-4">{{ t('valuation') }}</th>
+          <th class="border-0 py-4">{{ t('volume') }}</th>
+          <th class="border-0 py-4">{{ t('tags_taxonomy') }}</th>
+          <th class="border-0 py-4">{{ t('condition') }}</th>
+          <th class="border-0 py-4 pr-4">{{ t('actions') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in products %}
+        <tr>
+          <td class="py-4 pl-4 align-middle font-weight-bold">{{ product.Name }}</td>
+          <td class="py-4 align-middle text-bh-primary font-weight-bold">HK$ {{ product.Price }}</td>
+          <td class="py-4 align-middle">{{ product.Stock }} {{ t('units') }}</td>
+          <td class="py-4 align-middle">
+            {% for tag in product.Tags %}
+            <span class="badge badge-light border text-muted px-2 py-1 mr-1 small" style="border-radius: 4px;">#{{ tag }}</span>
+            {% endfor %}
+          </td>
+          <td class="py-4 align-middle">
+            {% if product.Stock > 0 %}
+            <span class="badge rounded-pill px-3 py-1" style="background: #e8f5e9; color: #1b5e20;">{{ t('active_status') }}</span>
+            {% else %}
+            <span class="badge rounded-pill px-3 py-1" style="background: #ffebee; color: #c62828;">{{ t('no_stock') }}</span>
+            {% endif %}
+          </td>
+          <td class="py-4 pr-4 align-middle">
+            <div class="d-flex" style="gap: 8px;">
+              <button type="button" class="btn btn-sm btn-outline-dark rounded-pill px-3 font-weight-bold" style="border: 2px solid var(--bh-primary); color: var(--bh-primary); font-size: 0.75rem;" data-toggle="modal" data-target="#editModal{{ product.ProductID }}">{{ t('edit_btn') }}</button>
+              <form action="{{ url_for('deleteProduct', vendor_id=vendor_id, product_id=product.ProductID) }}" method="POST" class="m-0" onsubmit="return confirm('{{ t('confirm_deactivate') }}');">
+                <button type="submit" class="btn btn-sm text-danger font-weight-bold px-3" style="font-size: 0.75rem;">{{ t('remove_btn') }}</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Edit Modal for {{ product.Name }} -->
+        <div class="modal fade" id="editModal{{ product.ProductID }}" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+              <div class="modal-header border-0 pb-0 px-4 pt-4">
+                <h5 class="modal-title font-weight-bold" style="font-family: 'Playfair Display', serif; color: var(--bh-primary);">{{ t('edit_title') }}: {{ product.Name }}</h5>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+              </div>
+              <div class="modal-body px-4 pb-4">
+                <form action="{{ url_for('editProduct', vendor_id=vendor_id, product_id=product.ProductID) }}" method="POST">
+                  <div class="form-group mb-3">
+                    <label class="field-label text-uppercase small font-weight-bold" style="color: var(--bh-primary); letter-spacing: 1px;">{{ t('product_label') }}</label>
+                    <input class="glass-search" style="border-radius: 12px; height: 45px;" name="Name" value="{{ product.Name }}" required>
+                  </div>
+                  <div class="row">
+                    <div class="col-6 mb-3">
+                      <label class="field-label text-uppercase small font-weight-bold" style="color: var(--bh-primary); letter-spacing: 1px;">{{ t('valuation') }}</label>
+                      <input class="glass-search" style="border-radius: 12px; height: 45px;" name="Price" value="{{ product.Price }}" required>
+                    </div>
+                    <div class="col-6 mb-3">
+                      <label class="field-label text-uppercase small font-weight-bold" style="color: var(--bh-primary); letter-spacing: 1px;">{{ t('availability') }}</label>
+                      <input class="glass-search" style="border-radius: 12px; height: 45px;" name="Quantity" value="{{ product.Stock }}" required>
+                    </div>
+                  </div>
+                  <div class="form-group mb-3">
+                    <label class="field-label text-uppercase small font-weight-bold" style="color: var(--bh-primary); letter-spacing: 1px;">{{ t('artisanal_narrative') }}</label>
+                    <input class="glass-search" style="border-radius: 12px; height: 45px;" name="Description" value="{{ product.Description }}">
+                  </div>
+                  <div class="form-group mb-4">
+                    <label class="field-label text-uppercase small font-weight-bold" style="color: var(--bh-primary); letter-spacing: 1px;">{{ t('tags_help') }}</label>
+                    <input class="glass-search" style="border-radius: 12px; height: 45px;" name="Tags" value="{{ product.Tags|join(', ') }}">
+                  </div>
+                  <button type="submit" class="btn-luxury w-100 py-2 shadow-none">{{ t('save_changes') }}</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="frosted-box text-center py-5 border" style="background: var(--bh-bg);">
+    <h3 class="form-title h4 mb-3">{{ t('empty_studio') }}</h3>
+    <p class="text-muted">{{ t('artisan_sub') }}</p>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}
+
+{% block navBar %}
+<a class="btn-dark-action" href="{{ url_for('vendorOrders', vendor_id=vendor_id) }}">{{ t('nav_fulfillment') }}</a>
+<a class="btn-secondary-action" href="{{ url_for('logout') }}">{{ t('nav_sign_out') }}</a>
+{% endblock %}

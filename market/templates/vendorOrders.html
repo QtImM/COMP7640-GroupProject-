@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}{{ t('title_fulfillment') }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+  <!-- ── Vendor Dark Dashboard Header ── -->
+  <div class="vendor-dashboard-shell fade-in">
+    <span class="role-badge role-badge-vendor mb-3 d-inline-block">🏪 {{ t('role_vendor') }}</span>
+    <h1 class="display-4 font-weight-bold mt-2" style="font-family: 'Playfair Display', serif;">{{ t('fulfillment_title') }}</h1>
+    <p class="text-muted lead">{{ t('artisan_desc') }}</p>
+  </div>
+
+
+  {% if orders %}
+  <div class="luxury-card p-0 overflow-hidden shadow-sm" style="border: 1px solid rgba(139, 90, 43, 0.08); background: var(--bh-white);">
+    <table class="table table-hover mb-0">
+      <thead style="background: #fbf8f5;">
+        <tr class="text-muted small text-uppercase letter-spacing-1 font-weight-bold">
+          <th class="border-0 py-4 pl-4">{{ t('order_id') }}</th>
+          <th class="border-0 py-4">{{ t('product_name') }}</th>
+          <th class="border-0 py-4">{{ t('customer') }}</th>
+          <th class="border-0 py-4">{{ t('status') }}</th>
+          <th class="border-0 py-4 pr-4 text-right">{{ t('actions') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in orders %}
+        <tr class="fade-in">
+          <td class="py-4 pl-4 align-middle">
+            <div class="font-weight-bold text-bh-primary">#{{ item.OrderID }}</div>
+            <div class="small text-muted">{{ item.Date }}</div>
+          </td>
+          <td class="py-4 align-middle">
+            <div class="font-weight-bold">{{ item.ProductName }}</div>
+            <div class="small">{{ t('quantity') }}: <span class="badge badge-light border">{{ item.Quantity }}</span></div>
+          </td>
+          <td class="py-4 align-middle">
+            <div class="small font-weight-bold">{{ item.Customer }}</div>
+            <div class="small text-muted" style="max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ item.Address }}</div>
+          </td>
+          <td class="py-4 align-middle">
+            {% if item.Status == 'placed' %}
+            <span class="badge rounded-pill px-3 py-1" style="background: #fff3e0; color: #e65100;">{{ t('status_placed') }}</span>
+            {% elif item.Status == 'shipped' %}
+            <span class="badge rounded-pill px-3 py-1" style="background: #e8f5e9; color: #1b5e20;">{{ t('status_shipped') }}</span>
+            {% else %}
+            <span class="badge rounded-pill px-3 py-1" style="background: #fafafa; color: #757575;">{{ t('status_cancelled') }}</span>
+            {% endif %}
+          </td>
+          <td class="py-4 pr-4 align-middle text-right">
+            {% if item.Status == 'placed' %}
+            <form method="POST" action="/shipItem/{{ vendor_id }}/{{ item.OrderID }}/{{ item.OrderItemID }}" class="m-0">
+              <button type="submit" class="btn btn-dark btn-sm rounded-pill px-4 font-weight-bold" style="background: var(--bh-primary);">{{ t('ship_btn') }}</button>
+            </form>
+            {% else %}
+            <span class="text-muted small font-italic">{{ t('acquisition_secured') }}</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="frosted-box text-center py-5 shadow-sm border" style="background: var(--bh-bg);">
+    <h3 class="form-title h4 mb-3">{{ t('no_studios') }}</h3>
+    <p class="text-muted">{{ t('artisan_sub') }}</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block navBar %}
+<a class="btn-dark-action" href="{{ url_for('sell', seller_id=vendor_id) }}">{{ t('nav_studio') }}</a>
+<a class="btn-secondary-action" href="{{ url_for('logout') }}">{{ t('nav_sign_out') }}</a>
+{% endblock %}

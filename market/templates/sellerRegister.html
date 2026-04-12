@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}{{ t('title_vendor_reg') }}{% endblock %}
+
+{% block content %}
+<section class="auth-wrapper fade-in">
+  <div class="auth-card mx-auto">
+    <h1 class="auth-title">{{ t('register_title') }}</h1>
+    <p class="auth-subtitle">{{ t('vendor_portal_sub') }}</p>
+
+    <form method="POST" action="">
+      <div class="form-row">
+        <div class="col mb-3">
+          <label class="field-label" for="vendor-first-name">{{ t('first_name') }}</label>
+          <input id="vendor-first-name" type="text" class="market-input" name="First_Name" required>
+        </div>
+        <div class="col mb-3">
+          <label class="field-label" for="vendor-last-name">{{ t('last_name') }}</label>
+          <input id="vendor-last-name" type="text" class="market-input" name="Last_Name" required>
+        </div>
+      </div>
+      <div class="form-group mb-3">
+        <label class="field-label" for="vendor-email">{{ t('email_label') }}</label>
+        <input id="vendor-email" type="email" class="market-input" name="Email" required>
+      </div>
+      <div class="form-group mb-3">
+        <label class="field-label" for="vendor-password">{{ t('password_label') }}</label>
+        <input id="vendor-password" type="password" class="market-input" name="Password" required>
+      </div>
+      <div class="form-group mb-3">
+        <label class="field-label" for="vendor-phone">{{ t('mobile_no') }}</label>
+        <input id="vendor-phone" type="text" class="market-input" name="Phone_Number" required>
+      </div>
+      <div class="form-group mb-4">
+        <label class="field-label" for="vendor-city">{{ t('place_of_op') }}</label>
+        <input id="vendor-city" type="text" class="market-input" name="Place_Of_Operation" required>
+      </div>
+      <button type="submit" class="btn-primary-action w-100">{{ t('register_btn') }}</button>
+    </form>
+
+    <div class="text-center mt-4 pt-4 border-top">
+      <p class="small text-muted mb-2 font-italic">{{ t('already_registered') }}</p>
+      <a class="nav-link p-0 font-weight-bold" style="color: var(--bh-gold)" href="{{ url_for('SellerLogin') }}">{{ t('login_btn') }} →</a>
+      <a class="nav-link p-0 text-muted small font-weight-bold mt-3" href="{{ url_for('homePage') }}">← {{ t('back_to_homepage') }}</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

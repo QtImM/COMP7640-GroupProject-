@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}{{ t('title_checkout') }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0 fade-in">
+  <div class="row">
+    <!-- Order Summary -->
+    <div class="col-lg-7 mb-4">
+      <div class="frosted-box shadow-sm border p-4" style="background: var(--bh-white);">
+        <h3 class="font-weight-bold mb-4" style="font-family: 'Playfair Display', serif; color: var(--bh-primary);">{{ t('confirm_order') }}</h3>
+        {% if cart_items %}
+        {% for item in cart_items %}
+        <div class="d-flex justify-content-between align-items-center py-3 {% if not loop.last %}border-bottom{% endif %}">
+          <div>
+            <span class="font-weight-bold">{{ item.Name }}</span>
+            <span class="text-muted small ml-2">x{{ item.Quantity }}</span>
+            <div class="text-muted small">{{ item.Vendor }}</div>
+          </div>
+          <span class="font-weight-bold">HK$ {{ item.Subtotal }}</span>
+        </div>
+        {% endfor %}
+        <hr>
+        <div class="d-flex justify-content-between align-items-center">
+          <span class="h5 m-0 font-weight-bold">{{ t('total_valuation') }}</span>
+          <span class="h4 m-0 font-weight-bold text-bh-primary">HK$ {{ total_val }}</span>
+        </div>
+        {% else %}
+        <p class="text-muted">Your cart is empty.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Checkout Form -->
+    <div class="col-lg-5">
+  <div class="frosted-box shadow-lg" style="border-top: 5px solid var(--bh-gold);">
+    <div class="text-center mb-5">
+      <h3 class="text-bh-gold small font-weight-bold text-uppercase letter-spacing-2 mb-2">{{ t('nav_my_bag') }}</h3>
+      <h1 class="form-title">{{ t('shipping_details') }}</h1>
+      <p class="text-muted small">{{ t('customer_portal_sub') }}</p>
+    </div>
+
+    <form method="POST" action="">
+      <div class="row">
+        <div class="col-md-6 mb-4">
+          <label class="field-label text-uppercase small font-weight-bold" style="color: var(--bh-primary); letter-spacing: 1px;">{{ t('shipping_addr') }}</label>
+          <input id="checkout-hno" type="text" class="glass-search" style="border-radius: 12px; height: 50px;" name="HNO" placeholder="..." required>
+        </div>
+        <div class="col-md-6 mb-4">
+          <label class="field-label text-uppercase small font-weight-bold" style="color: var(--bh-primary); letter-spacing: 1px;">{{ t('city') }}</label>
+          <input id="checkout-city" type="text" class="glass-search" style="border-radius: 12px; height: 50px;" name="City" placeholder="..." required>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-4">
+          <label class="field-label text-uppercase small font-weight-bold" style="color: var(--bh-primary); letter-spacing: 1px;">{{ t('state') }}</label>
+          <input id="checkout-state" type="text" class="glass-search" style="border-radius: 12px; height: 50px;" name="State" placeholder="..." required>
+        </div>
+        <div class="col-md-6 mb-4">
+          <label class="field-label text-uppercase small font-weight-bold" style="color: var(--bh-primary); letter-spacing: 1px;">{{ t('pincode') }}</label>
+          <input id="checkout-pincode" type="text" class="glass-search" style="border-radius: 12px; height: 50px;" name="Pincode" placeholder="..." required>
+        </div>
+      </div>
+
+      <div class="form-group mb-5">
+        <label class="field-label text-uppercase small font-weight-bold" style="color: var(--bh-primary); letter-spacing: 1px;">{{ t('payment_mode') }}</label>
+        <input id="checkout-mode" type="text" class="glass-search" style="border-radius: 12px; height: 50px;" name="Mode" placeholder="..." required>
+      </div>
+
+      <button type="submit" class="btn-luxury w-100 py-3 shadow-none mt-2">{{ t('place_order_btn') }}</button>
+    </form>
+    
+    <div class="text-center mt-5 pt-4 border-top">
+        <a class="nav-link p-0 font-weight-bold opacity-75" style="color: var(--bh-primary)" href="/order/{{ user_id }}">&#8592; Adjust the Gathering</a>
+    </div>
+  </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block navBar %}
+{% endblock %}

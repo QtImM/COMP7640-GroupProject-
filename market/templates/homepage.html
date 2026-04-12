@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}{{ t('title_home') }}{% endblock %}
+
+{% block content %}
+<!-- Bakehouse Balanced Hero -->
+<section class="hero-split fade-in mb-5">
+  <div class="hero-left">
+    <h3 class="portal-tag">{{ t('the_collection') }}</h3>
+    <h1 class="split-title">{{ t('bespoke_exp') | safe }}</h1>
+
+    <p class="text-muted lead mb-5" style="max-width: 480px;">{{ t('bespoke_sub') }}</p>
+    
+    <div class="d-flex" style="gap: 15px;">
+      <a class="btn-luxury px-5 py-3" href="{{ url_for('loginRegisterUser') }}">{{ t('enter_collective') }}</a>
+      <a class="btn btn-outline-bh-primary rounded-pill px-5 font-weight-bold" style="border: 2px solid var(--bh-primary); color: var(--bh-primary); padding-top: 12px;" href="{{ url_for('vendorListing') }}">{{ t('explore_studios') }}</a>
+    </div>
+  </div>
+  
+  <div class="hero-right">
+    <img src="{{ url_for('static', filename='hero_bh.png') }}" alt="Artisanal Marketplace">
+    <div style="position: absolute; bottom: 30px; left: 30px; background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); padding: 15px 25px; border-radius: 15px;">
+        <span class="text-bh-gold font-weight-bold small text-uppercase">{{ t('featured_locale') }}</span>
+        <div class="font-weight-bold" style="color: var(--bh-primary)">{{ t('locale_name') }}</div>
+    </div>
+  </div>
+</section>
+
+<!-- Boutique Portal Selection -->
+<section class="mt-5 pt-5 fade-in">
+  <div class="section-head text-center mb-5">
+      <h3 class="text-bh-gold small font-weight-bold text-uppercase letter-spacing-2 mb-3">Choice</h3>
+      <h2 class="form-title">{{ t('select_journey') }}</h2>
+      <div class="mx-auto bg-bh-gold mt-3" style="width: 60px; height: 3px; border-radius: 10px;"></div>
+  </div>
+
+  <div class="portal-entry-grid">
+    <!-- Shopper Portal -->
+    <article class="luxury-card h-100">
+      <div class="card-body p-5 d-flex flex-column h-100 text-center">
+        <div class="mb-4">
+            <img src="https://img.icons8.com/ios/100/8B5A2B/shopping-bag.png" height="60">
+        </div>
+        <h3 class="form-title h4 mb-3">{{ t('shopper_archive') }}</h3>
+        <p class="text-muted small mb-5">{{ t('shopper_desc') }}</p>
+        <div class="mt-auto">
+            <a class="btn-luxury w-100" href="{{ url_for('loginRegisterUser') }}">{{ t('customer_access') }}</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Artisan Portal -->
+    <article class="luxury-card h-100" style="border-top: 5px solid var(--bh-primary);">
+      <div class="card-body p-5 d-flex flex-column h-100 text-center">
+        <div class="mb-4">
+            <img src="https://img.icons8.com/ios/100/8B5A2B/work.png" height="60">
+        </div>
+        <h3 class="form-title h4 mb-3">{{ t('artisan_studio') }}</h3>
+        <p class="text-muted small mb-5">{{ t('artisan_desc') }}</p>
+        <div class="mt-auto">
+            <a class="btn btn-dark w-100 rounded-pill py-3 font-weight-bold shadow-none" style="background: var(--bh-primary);" href="{{ url_for('loginRegisterSeller') }}">{{ t('vendor_access') }}</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Logistics Portal -->
+    <article class="luxury-card h-100">
+      <div class="card-body p-5 d-flex flex-column h-100 text-center">
+        <div class="mb-4">
+            <img src="https://img.icons8.com/ios/100/8B5A2B/department.png" height="60">
+        </div>
+        <h3 class="form-title h4 mb-3">{{ t('studio_registry') }}</h3>
+        <p class="text-muted small mb-5">{{ t('registry_desc') }}</p>
+        <div class="mt-auto">
+            <a class="btn btn-outline-bh-gold w-100 rounded-pill py-3 font-weight-bold" style="border: 2px solid var(--bh-gold); color: #8a6523;" href="{{ url_for('vendorListing') }}">{{ t('view_directory') }}</a>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<style>
+.section-head { margin-bottom: 50px; }
+.bg-bh-gold { background-color: var(--bh-gold); }
+.text-bh-gold { color: var(--bh-gold); }
+</style>
+{% endblock %}

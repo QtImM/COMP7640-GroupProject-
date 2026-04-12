@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% block title %}{{ t('title_marketplace') }}{% endblock %}
+
+{% block content %}
+<!-- Bakehouse Hero: Minimalist & High-Impact -->
+<section class="hero-wrap fade-in rounded-xl overflow-hidden mb-5">
+  <div class="row align-items-center">
+    <div class="col-lg-6 text-left pl-5">
+      <h1 class="hero-title mb-4">{{ t('marketplace_title') | safe }}</h1>
+
+      <p class="text-muted lead mb-5" style="max-width: 500px;">{{ t('bespoke_sub') }}</p>
+      
+      <!-- Bakehouse Search Bar -->
+      <div class="search-container pr-5">
+        <form method="GET" action="">
+          <input type="text" class="glass-search" placeholder="{{ t('search_placeholder') }}" name="q" value="{{ search_term }}">
+          {% if vendor_filter_id %}<input type="hidden" name="vendor_id" value="{{ vendor_filter_id }}">{% endif %}
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-6 px-0">
+      <div class="hero-image-frame" style="height: 600px; border-radius: 0 0 0 100px; overflow: hidden; background: url({{ url_for('static', filename='hero_bh.png') }}) center/cover no-repeat;">
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container-fluid px-0">
+  {% if recommendations %}
+  <!-- "Curated for You" - Warm Section -->
+  <section class="mt-5 fade-in">
+    <div class="section-head text-center">
+        <h3 class="text-bh-gold small font-weight-bold text-uppercase letter-spacing-2 mb-3">{{ t('discovery') }}</h3>
+        <h2 class="form-title">{{ t('recommendations') }}</h2>
+        <div class="mx-auto bg-bh-gold mt-3" style="width: 60px; height: 3px; border-radius: 10px;"></div>
+    </div>
+    
+    <div class="market-grid">
+      {% for dict in recommendations %}
+      <article class="luxury-card">
+        <div class="card-body">
+          <span class="vendor-tag">{{ dict.Vendor }}</span>
+          <h4 class="product-name">{{ dict.Name }}</h4>
+          <div class="d-flex justify-content-between align-items-center mt-4">
+            <span class="price">HK$ {{ dict.Price }}</span>
+            <div class="d-flex align-items-center" style="gap: 8px;">
+              <a href="{{ url_for('productDetail', product_id=dict.ProductID) }}" class="btn btn-outline-dark rounded-pill px-3 py-2 small font-weight-bold" style="border: 2px solid var(--bh-primary); color: var(--bh-primary);">{{ t('view_details') }}</a>
+              <form action="{{ url_for('addToCart', user_id=user_id) }}" method="POST" class="m-0">
+                <input type="hidden" name="product_id" value="{{ dict.ProductID }}">
+                <button type="submit" class="btn-luxury py-2 px-4 shadow-none">{{ t('add_to_bag') }}</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- The Main Collection -->
+  <section class="mt-5 pt-5 fade-in">
+    <div class="section-head text-center">
+        <h3 class="text-bh-gold small font-weight-bold text-uppercase letter-spacing-2 mb-3">{{ t('artisan_collective') }}</h3>
+        <h2 class="form-title">{{ t('perm_collection') }}</h2>
+        {% if selected_vendor %}
+        <p class="text-muted mt-2">{{ t('filtering_by') }} <span class="font-weight-bold" style="color: var(--bh-primary)">{{ selected_vendor.BusinessName }}</span></p>
+        {% endif %}
+        <div class="mx-auto bg-bh-gold mt-3" style="width: 60px; height: 3px; border-radius: 10px;"></div>
+    </div>
+
+    <div class="market-grid">
+      {% for dict in list %}
+      <article class="luxury-card">
+        <div class="card-body">
+          <span class="vendor-tag">{{ dict.Vendor }}</span>
+          <h4 class="product-name">{{ dict.Name }}</h4>
+          <p class="text-muted small mb-4" style="min-height: 40px; font-weight: 400">{{ dict.Description[:90] }}...</p>
+          
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <span class="price">HK$ {{ dict.Price }}</span>
+                <div class="mt-1">
+                    {% if dict.Stock > 0 %}
+                    <span class="small font-weight-bold" style="color: #14613b">• {{ t('active') }}</span>
+                    {% else %}
+                    <span class="small font-weight-bold text-danger">• {{ t('out_of_stock') }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="d-flex align-items-center" style="gap: 8px;">
+              <a href="{{ url_for('productDetail', product_id=dict.ProductID) }}" class="btn btn-outline-dark rounded-pill px-3 py-2 small font-weight-bold" style="border: 2px solid var(--bh-primary); color: var(--bh-primary);">{{ t('view_details') }}</a>
+              {% if dict.Stock > 0 %}
+              <form action="{{ url_for('addToCart', user_id=user_id) }}" method="POST" class="m-0">
+                <input type="hidden" name="product_id" value="{{ dict.ProductID }}">
+                <button type="submit" class="btn-luxury py-2 px-4 shadow-none">{{ t('add_to_bag') }}</button>
+              </form>
+              {% else %}
+              <button type="button" class="btn btn-light rounded-pill px-4 text-muted small" disabled>{{ t('out_of_stock') }}</button>
+              {% endif %}
+            </div>
+          </div>
+          
+          <div class="mt-4 border-top pt-3 d-flex flex-wrap" style="gap: 8px;">
+            {% for tag in dict.Tags %}
+            <span class="small text-muted font-weight-medium">#{{ tag }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      </article>
+      {% else %}
+      <div class="col-12 text-center py-5">
+        <div class="frosted-box mx-auto border" style="background: var(--bh-bg)">
+            <h3 class="form-title mb-4">{{ t('empty_vault_title') }}</h3>
+            <p class="text-muted">{{ t('empty_vault_msg') }}</p>
+            <a href="{{ url_for('homePage') }}" class="btn-luxury mt-4">{{ t('refresh_collection') }}</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+</div>
+
+<style>
+.rounded-xl { border-radius: 40px; }
+.text-bh-gold { color: var(--bh-gold); }
+.bg-bh-gold { background-color: var(--bh-gold); }
+.letter-spacing-2 { letter-spacing: 2px; }
+.hero-title { font-size: 4rem; line-height: 1.1; }
+</style>
+{% endblock %}
+
+{% block navBar %}{% endblock %}

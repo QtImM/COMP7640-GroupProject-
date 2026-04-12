@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}{{ t('title_customer_reg') }}{% endblock %}
+
+{% block content %}
+<section class="auth-wrapper fade-in">
+  <div class="auth-card mx-auto">
+    <h1 class="auth-title">{{ t('register_title') }}</h1>
+    <p class="auth-subtitle">{{ t('customer_portal_sub') }}</p>
+
+    <form method="POST" action="">
+      <div class="form-row">
+        <div class="col mb-3">
+          <label class="field-label" for="customer-first-name">{{ t('first_name') }}</label>
+          <input id="customer-first-name" type="text" class="market-input" name="First_Name" required>
+        </div>
+        <div class="col mb-3">
+          <label class="field-label" for="customer-last-name">{{ t('last_name') }}</label>
+          <input id="customer-last-name" type="text" class="market-input" name="Last_Name" required>
+        </div>
+      </div>
+      <div class="form-group mb-3">
+        <label class="field-label" for="customer-email">{{ t('email_label') }}</label>
+        <input id="customer-email" type="email" class="market-input" name="Email" required>
+      </div>
+      <div class="form-group mb-3">
+        <label class="field-label" for="customer-password">{{ t('password_label') }}</label>
+        <input id="customer-password" type="password" class="market-input" name="Password" required>
+      </div>
+      <div class="form-group mb-3">
+        <label class="field-label" for="customer-mobile">{{ t('mobile_no') }}</label>
+        <input id="customer-mobile" type="text" class="market-input" name="Mobile_No" required>
+      </div>
+      <div class="form-group mb-4">
+        <label class="field-label" for="customer-address">{{ t('shipping_addr') }}</label>
+        <input id="customer-address" type="text" class="market-input" name="Shipping_Address" required>
+      </div>
+      <button type="submit" class="btn-primary-action w-100">{{ t('register_btn') }}</button>
+    </form>
+
+    <div class="text-center mt-4 pt-4 border-top">
+      <p class="small text-muted mb-2 font-italic">{{ t('already_registered') }}</p>
+      <a class="nav-link p-0 font-weight-bold" style="color: var(--bh-primary)" href="{{ url_for('UserLogin') }}">{{ t('login_btn') }} →</a>
+      <a class="nav-link p-0 text-muted small font-weight-bold mt-3" href="{{ url_for('homePage') }}">← {{ t('back_to_homepage') }}</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

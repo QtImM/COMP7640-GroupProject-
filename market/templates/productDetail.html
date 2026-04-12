@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}{{ product.Name }} | BU Marketplace{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+  <div class="row fade-in">
+    <!-- Product Info -->
+    <div class="col-lg-8">
+      <div class="frosted-box shadow-sm border p-5" style="background: var(--bh-white);">
+        <div class="d-flex align-items-center mb-3">
+          <span class="vendor-tag">{{ product.VendorName }}</span>
+          {% if product.VendorLocation %}
+          <span class="text-muted small ml-3">{{ product.VendorLocation }}</span>
+          {% endif %}
+        </div>
+
+        <h1 class="form-title display-4 font-weight-bold mb-3">{{ product.Name }}</h1>
+
+        {% if product.Tags %}
+        <div class="mb-4 d-flex flex-wrap" style="gap: 8px;">
+          {% for tag in product.Tags %}
+          <span class="badge badge-light border text-muted px-3 py-2 small" style="border-radius: 20px;">#{{ tag }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <p class="text-muted lead mb-5" style="line-height: 1.8;">{{ product.Description }}</p>
+
+        <div class="d-flex align-items-center mb-4">
+          <span class="h2 font-weight-bold text-bh-primary m-0">HK$ {{ product.Price }}</span>
+          <span class="ml-4">
+            {% if product.Stock > 0 %}
+            <span class="small font-weight-bold" style="color: #14613b;">{{ t('active') }} ({{ product.Stock }} {{ t('stock_rem') }})</span>
+            {% else %}
+            <span class="small font-weight-bold text-danger">{{ t('out_of_stock') }}</span>
+            {% endif %}
+          </span>
+        </div>
+
+        {% if product.VendorRating is not none %}
+        <div class="text-muted small mb-4">
+          {{ t('satisfaction') }}: <span class="font-weight-bold text-bh-primary">{{ product.VendorRating }}/5.00</span>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Action Sidebar -->
+    <aside class="col-lg-4">
+      <div class="frosted-box shadow-lg p-5" style="border-top: 5px solid var(--bh-gold);">
+        <h3 class="font-weight-bold mb-4">{{ t('add_to_bag') }}</h3>
+        <div class="d-flex justify-content-between mb-3">
+          <span class="text-muted">{{ t('valuation') }}</span>
+          <span class="font-weight-bold">HK$ {{ product.Price }}</span>
+        </div>
+        <div class="d-flex justify-content-between mb-4">
+          <span class="text-muted">{{ t('nav_fulfillment') }}</span>
+          <span class="text-success font-weight-bold">{{ t('active') }}</span>
+        </div>
+        <hr class="mb-4">
+
+        {% if user_id and product.Stock > 0 %}
+        <form action="{{ url_for('addToCart', user_id=user_id) }}" method="POST">
+          <input type="hidden" name="product_id" value="{{ product.ProductID }}">
+          <input type="hidden" name="redirect_to" value="{{ url_for('productDetail', product_id=product.ProductID) }}">
+          <button type="submit" class="btn-luxury w-100 py-3 text-center shadow-none">{{ t('add_to_bag') }}</button>
+        </form>
+        {% elif not user_id %}
+        <a href="{{ url_for('loginRegisterUser') }}" class="btn-luxury w-100 py-3 text-center d-block">{{ t('nav_customer_login') }}</a>
+        {% else %}
+        <button class="btn btn-light w-100 py-3 rounded-pill text-muted font-weight-bold" disabled>{{ t('out_of_stock') }}</button>
+        {% endif %}
+
+        <div class="text-center mt-4">
+          <a href="{{ url_for('homePage') }}" class="nav-link p-0 font-weight-bold opacity-75" style="color: var(--bh-primary);">&#8592; {{ t('back_to_homepage') }}</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+{% endblock %}
+
+{% block navBar %}{% endblock %}
