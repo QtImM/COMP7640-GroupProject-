@@ -94,6 +94,18 @@
       {% block content %}{% endblock %}
     </main>
 
+    <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 90px; right: 20px; z-index: 1080; pointer-events: none;">
+      <div id="add-to-bag-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2200" style="min-width: 280px; border-left: 4px solid #14613b; pointer-events: auto;">
+        <div class="toast-header" style="background: #fff9f1;">
+          <strong class="mr-auto" id="add-to-bag-toast-title" style="color: var(--bh-primary);">Notice</strong>
+          <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="toast-body" id="add-to-bag-toast-message" style="background: #fff; color: #2b2b2b;"></div>
+      </div>
+    </div>
+
     <footer class="mt-5 py-5 bg-white border-top border-bh-gold">
         <div class="container text-center">
             <h3 class="brand-main mb-3" style="font-size: 1.2rem;">{{ t('brand_main') }}</h3>
@@ -110,6 +122,23 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script>
+      function showAddToBagToast(message, isSuccess) {
+        const toastEl = document.getElementById('add-to-bag-toast');
+        const toastTitle = document.getElementById('add-to-bag-toast-title');
+        const toastMsg = document.getElementById('add-to-bag-toast-message');
+        if (!toastEl || !toastTitle || !toastMsg) {
+          return;
+        }
+
+        toastTitle.textContent = isSuccess ? 'Success' : 'Notice';
+        toastMsg.textContent = message || '';
+        toastEl.style.borderLeftColor = isSuccess ? '#14613b' : '#c62828';
+
+        if (window.jQuery && typeof window.jQuery(toastEl).toast === 'function') {
+          window.jQuery(toastEl).toast('show');
+        }
+      }
+
       document.addEventListener('submit', async function (event) {
         const form = event.target;
         if (!(form instanceof HTMLFormElement) || form.dataset.asyncAddToBag !== 'true') {
@@ -139,11 +168,14 @@
             return;
           }
 
+          showAddToBagToast(data.message || '', !!data.success);
+
           if (feedback) {
             feedback.textContent = data.message || '';
             feedback.style.color = data.success ? '#14613b' : '#c62828';
           }
         } catch (err) {
+          showAddToBagToast('Failed to add item. Please try again.', false);
           if (feedback) {
             feedback.textContent = 'Could not add item to cart. Please try again.';
             feedback.style.color = '#c62828';
@@ -155,6 +187,7 @@
           }
         }
       });
+
     </script>
   </body>
 </html>

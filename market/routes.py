@@ -237,7 +237,7 @@ def get_all_vendors():
             v.business_name,
             v.geographical_presence,
             v.average_rating,
-            COUNT(p.product_id) AS product_count
+            COUNT(CASE WHEN p.status = 'active' THEN 1 END) AS product_count
         FROM {MARKETPLACE_DB}.vendor AS v
         LEFT JOIN {MARKETPLACE_DB}.product AS p
             ON v.vendor_id = p.vendor_id
@@ -1298,10 +1298,11 @@ def SellerLogin():
             return redirect(url_direct)
     return render_template('SellerLogin.html')
 
-@app.route('/logout')
+@app.route('/logout', methods=['GET', 'POST'])
 def logout():
+    lang = session.get('lang', 'en')
     session.clear()
-    flash(get_text('flash_logout_success', session.get('lang', 'en')))
+    flash(get_text('flash_logout_success', lang))
     return redirect(url_for('homePage'))
 
 def is_authenticated(required_id, role):

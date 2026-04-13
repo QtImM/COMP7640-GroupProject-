@@ -10,6 +10,11 @@
       <h1 class="display-4 font-weight-bold mt-2" style="font-family: 'Playfair Display', serif;">{{ business_name }}</h1>
       <p class="text-muted lead">{{ t('artisan_desc') }}</p>
     </div>
+    <div>
+      <a id="vendor-dashboard-signout" href="{{ url_for('logout') }}" class="btn btn-light rounded-pill px-4 py-2 font-weight-bold text-danger">
+        {{ t('nav_sign_out') }}
+      </a>
+    </div>
   </div>
   <div class="row mt-4" style="gap: 0;">
     <div class="col-md-4 mb-3">

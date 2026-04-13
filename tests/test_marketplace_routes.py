@@ -1,6 +1,7 @@
 import sys
 import types
 import unittest
+from pathlib import Path
 from unittest.mock import patch
 
 import yaml
@@ -259,6 +260,38 @@ class MarketplaceRouteTests(unittest.TestCase):
 
         self.assertNotIn("store.jpg", rendered)
         self.assertIn("Vendor Sign In", rendered)
+
+    def test_vendor_dashboard_nav_uses_direct_logout_link(self):
+        with routes.app.test_request_context("/sell/4"):
+            routes.session["role"] = "vendor"
+            routes.session["vendor_id"] = 4
+
+            with patch.object(routes, "find_vendor_login_by_id", return_value=(4, "Vendor Tim")), \
+                 patch.object(routes, "get_vendor_products", return_value=[]):
+                rendered = routes.sell("4")
+
+        self.assertIn('href="/logout"', rendered)
+        self.assertNotIn("data-signout-link", rendered)
+
+    def test_vendor_dashboard_shell_keeps_clear_of_navbar_dropdown(self):
+        css_path = Path(routes.app.root_path) / "static" / "styles.css"
+        css = css_path.read_text(encoding="utf-8")
+
+        self.assertNotIn("margin: -20px -20px 30px -20px;", css)
+        self.assertIn("margin: 0 0 30px 0;", css)
+
+    def test_vendor_dashboard_has_direct_sign_out_action(self):
+        with routes.app.test_request_context("/sell/4"):
+            routes.session["role"] = "vendor"
+            routes.session["vendor_id"] = 4
+
+            with patch.object(routes, "find_vendor_login_by_id", return_value=(4, "Vendor Tim")), \
+                 patch.object(routes, "get_vendor_products", return_value=[]):
+                rendered = routes.sell("4")
+
+        self.assertIn('id="vendor-dashboard-signout"', rendered)
+        self.assertIn('href="/logout"', rendered)
+        self.assertNotIn('class="btn btn-outline-light rounded-pill px-4 py-2 font-weight-bold"', rendered)
 
     def test_is_authenticated_does_not_allow_guest_role(self):
         with routes.app.test_request_context('/'):
