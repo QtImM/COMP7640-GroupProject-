@@ -109,5 +109,52 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script>
+      document.addEventListener('submit', async function (event) {
+        const form = event.target;
+        if (!(form instanceof HTMLFormElement) || form.dataset.asyncAddToBag !== 'true') {
+          return;
+        }
+
+        event.preventDefault();
+        const button = form.querySelector('button[type="submit"]');
+        const feedback = document.getElementById('add-to-bag-feedback');
+        const originalText = button ? button.textContent : '';
+
+        if (button) {
+          button.disabled = true;
+          button.textContent = '...';
+        }
+
+        try {
+          const response = await fetch(form.action, {
+            method: 'POST',
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            body: new FormData(form)
+          });
+          const data = await response.json();
+
+          if (response.status === 401 && data.redirect) {
+            window.location.href = data.redirect;
+            return;
+          }
+
+          if (feedback) {
+            feedback.textContent = data.message || '';
+            feedback.style.color = data.success ? '#14613b' : '#c62828';
+          }
+        } catch (err) {
+          if (feedback) {
+            feedback.textContent = 'Failed to add item. Please try again.';
+            feedback.style.color = '#c62828';
+          }
+        } finally {
+          if (button) {
+            button.disabled = false;
+            button.textContent = originalText;
+          }
+        }
+      });
+    </script>
   </body>
 </html>

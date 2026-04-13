@@ -48,7 +48,7 @@
             <span class="price">HK$ {{ dict.Price }}</span>
             <div class="d-flex align-items-center" style="gap: 8px;">
               <a href="{{ url_for('productDetail', product_id=dict.ProductID) }}" class="btn btn-outline-dark rounded-pill px-3 py-2 small font-weight-bold" style="border: 2px solid var(--bh-primary); color: var(--bh-primary);">{{ t('view_details') }}</a>
-              <form action="{{ url_for('addToCart', user_id=user_id) }}" method="POST" class="m-0">
+              <form action="{{ url_for('addToCart', user_id=user_id) }}" method="POST" class="m-0" data-async-add-to-bag="true">
                 <input type="hidden" name="product_id" value="{{ dict.ProductID }}">
                 <button type="submit" class="btn-luxury py-2 px-4 shadow-none">{{ t('add_to_bag') }}</button>
               </form>
@@ -95,7 +95,7 @@
             <div class="d-flex align-items-center" style="gap: 8px;">
               <a href="{{ url_for('productDetail', product_id=dict.ProductID) }}" class="btn btn-outline-dark rounded-pill px-3 py-2 small font-weight-bold" style="border: 2px solid var(--bh-primary); color: var(--bh-primary);">{{ t('view_details') }}</a>
               {% if dict.Stock > 0 %}
-              <form action="{{ url_for('addToCart', user_id=user_id) }}" method="POST" class="m-0">
+              <form action="{{ url_for('addToCart', user_id=user_id) }}" method="POST" class="m-0" data-async-add-to-bag="true">
                 <input type="hidden" name="product_id" value="{{ dict.ProductID }}">
                 <button type="submit" class="btn-luxury py-2 px-4 shadow-none">{{ t('add_to_bag') }}</button>
               </form>

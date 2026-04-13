@@ -64,8 +64,12 @@
                   <form method="POST" action="/removeOrderItem/{{ user_id }}/{{ order.OrderID }}/{{ item.OrderItemID }}" class="m-0">
                     <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-4 font-weight-bold">{{ t('remove_item') }}</button>
                   </form>
+                  {% elif item.Status == 'cancelled' %}
+                  <span class="text-muted small font-weight-bold">{{ t('status_cancelled') }}</span>
+                  {% elif item.Status == 'shipped' %}
+                  <span class="text-muted small font-weight-bold">{{ t('status_shipped') }}</span>
                   {% else %}
-                  <span class="text-muted small font-italic">{{ t('acquisition_secured') }}</span>
+                  <span class="text-muted small font-weight-bold">{{ t('status_processing') }}</span>
                   {% endif %}
                 </td>
               </tr>

@@ -60,11 +60,12 @@
         <hr class="mb-4">
 
         {% if user_id and product.Stock > 0 %}
-        <form action="{{ url_for('addToCart', user_id=user_id) }}" method="POST">
+        <form action="{{ url_for('addToCart', user_id=user_id) }}" method="POST" data-async-add-to-bag="true">
           <input type="hidden" name="product_id" value="{{ product.ProductID }}">
           <input type="hidden" name="redirect_to" value="{{ url_for('productDetail', product_id=product.ProductID) }}">
           <button type="submit" class="btn-luxury w-100 py-3 text-center shadow-none">{{ t('add_to_bag') }}</button>
         </form>
+        <div id="add-to-bag-feedback" class="small mt-2 text-center" style="min-height: 20px;"></div>
         {% elif not user_id %}
         <a href="{{ url_for('loginRegisterUser') }}" class="btn-luxury w-100 py-3 text-center d-block">{{ t('nav_customer_login') }}</a>
         {% else %}

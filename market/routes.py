@@ -1,4 +1,4 @@
-from flask import flash, redirect, render_template, request, url_for, session
+from flask import flash, redirect, render_template, request, url_for, session, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from market import my_sql
 from market import app
@@ -828,12 +828,24 @@ def productDetail(product_id):
 
 @app.route('/addToCart/<int:user_id>', methods=['POST'])
 def addToCart(user_id):
+    is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     if not is_authenticated(user_id, 'customer'):
-        flash(get_text('flash_access_denied', session.get('lang', 'en')))
+        message = get_text('flash_access_denied', session.get('lang', 'en'))
+        if is_ajax:
+            return jsonify({'success': False, 'message': message, 'redirect': url_for('UserLogin')}), 401
+        flash(message)
         return redirect(url_for('UserLogin'))
+
+    success = False
+    message = get_text('flash_invalid_item', session.get('lang', 'en'))
     product_id = request.form.get('product_id', type=int)
     if product_id:
         success, message = add_to_cart_db(user_id, product_id)
+
+    if is_ajax:
+        return jsonify({'success': success, 'message': message})
+
+    if message:
         flash(message)
     redirect_to = request.form.get('redirect_to', '')
     if redirect_to:
@@ -1180,12 +1192,11 @@ def order_placing(user_id):
         HNO = orderDetails['HNO']
         City = orderDetails['City']
         State = orderDetails['State']
-        Pincode = orderDetails['Pincode']
-        Mode = orderDetails['Mode']
-        shipping_address = f"{HNO}, {City}, {State}, {Pincode}"
+        shipping_address = f"{HNO}, {City}, {State}"
+        payment_method = 'standard'
 
         try:
-            create_marketplace_order(int(user_id), shipping_address, Mode, cart_items)
+            create_marketplace_order(int(user_id), shipping_address, payment_method, cart_items)
             flash(get_text('flash_order_success', session.get('lang', 'en')))
             clear_customer_cart(int(user_id))
             return redirect('/myOrders/' + str(user_id))
