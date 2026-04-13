@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}{{ t('title_checkout') }}{% endblock %}
+{% block title %}{{ t('checkout_btn') }} | BU Marketplace{% endblock %}
 
 {% block content %}
 <div class="container-fluid px-0 fade-in">
@@ -25,7 +25,7 @@
           <span class="h4 m-0 font-weight-bold text-bh-primary">HK$ {{ total_val }}</span>
         </div>
         {% else %}
-        <p class="text-muted">Your cart is empty.</p>
+        <p class="text-muted">{{ t('bag_empty') }}</p>
         {% endif %}
       </div>
     </div>
@@ -62,7 +62,7 @@
     </form>
     
     <div class="text-center mt-5 pt-4 border-top">
-        <a class="nav-link p-0 font-weight-bold opacity-75" style="color: var(--bh-primary)" href="/order/{{ user_id }}">&#8592; Adjust the Gathering</a>
+        <a class="nav-link p-0 font-weight-bold opacity-75" style="color: var(--bh-primary)" href="/order/{{ user_id }}">&#8592; {{ t('my_cart') }}</a>
     </div>
   </div>
     </div>

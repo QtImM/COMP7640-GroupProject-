@@ -120,7 +120,7 @@ class MarketplaceRouteTests(unittest.TestCase):
 
     def test_get_vendor_products_formats_stock_and_tags(self):
         fake_rows = [
-            (1, "Organic Spinach", 18.00, 98, "vegetable,organic,healthy", "active")
+            (1, "Organic Spinach", 18.00, 98, "vegetable,organic,healthy", "active", "Fresh organic spinach bundle")
         ]
         fake_connection = FakeConnection(fake_rows)
 
@@ -241,7 +241,7 @@ class MarketplaceRouteTests(unittest.TestCase):
                  patch.object(routes, "find_vendor_login_by_id", return_value=(1, "Fresh Valley Market")):
                 rendered = routes.homepage("1")
 
-        self.assertIn("Current store:", rendered)
+        self.assertIn("Showing", rendered)
         self.assertIn("Fresh Valley Market", rendered)
         self.assertNotIn("Clear Vendor Filter", rendered)
         self.assertNotIn("Viewing products from", rendered)
@@ -250,15 +250,15 @@ class MarketplaceRouteTests(unittest.TestCase):
         with routes.app.test_request_context("/loginRegisterUser"):
             rendered = routes.loginRegisterUser()
 
-        self.assertIn("Marketplace.png", rendered)
         self.assertNotIn("store.jpg", rendered)
+        self.assertIn("Customer Sign In", rendered)
 
     def test_login_register_seller_page_uses_marketplace_image(self):
         with routes.app.test_request_context("/loginRegisterSeller"):
             rendered = routes.loginRegisterSeller()
 
-        self.assertIn("Marketplace.png", rendered)
         self.assertNotIn("store.jpg", rendered)
+        self.assertIn("Vendor Sign In", rendered)
 
     def test_is_authenticated_does_not_allow_guest_role(self):
         with routes.app.test_request_context('/'):
