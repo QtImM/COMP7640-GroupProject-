@@ -1,9 +1,8 @@
-import yaml
 import pymysql
 pymysql.install_as_MySQLdb()
 import MySQLdb
-from pathlib import Path
 from flask import Flask, g
+from db_config import load_db_config
 
 app = Flask(__name__)
 app.secret_key = "this@is@my@secret"
@@ -39,27 +38,7 @@ class ManagedMySQL:
         self.connection = ManagedMySQLConnection(app_instance)
 
 
-def _load_db_config():
-    project_root = Path(__file__).resolve().parent.parent
-    candidate_paths = [
-        project_root / "database.yaml",
-        project_root / "database copy.yaml",
-    ]
-
-    for config_path in candidate_paths:
-        if config_path.exists():
-            with open(config_path, "r", encoding="utf-8") as f:
-                config = yaml.safe_load(f)
-            if config:
-                return config
-
-    searched = ", ".join(str(p) for p in candidate_paths)
-    raise FileNotFoundError(
-        f"Database config file not found. Checked: {searched}"
-    )
-
-
-db = _load_db_config()
+db = load_db_config()
 app.config["MYSQL_HOST"] = db["mysql_host"]
 app.config["MYSQL_USER"] = db["mysql_user"]
 app.config["MYSQL_PASSWORD"] = db["mysql_password"]

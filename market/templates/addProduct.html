@@ -119,49 +119,50 @@
             </div>
           </td>
         </tr>
-
-        <!-- Edit Modal for {{ product.Name }} -->
-        <div class="modal fade" id="editModal{{ product.ProductID }}" tabindex="-1" role="dialog">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
-              <div class="modal-header border-0 pb-0 px-4 pt-4">
-                <h5 class="modal-title font-weight-bold" style="font-family: 'Playfair Display', serif; color: var(--bh-primary);">{{ t('edit_title') }}: {{ product.Name }}</h5>
-                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-              </div>
-              <div class="modal-body px-4 pb-4">
-                <form action="{{ url_for('editProduct', vendor_id=vendor_id, product_id=product.ProductID) }}" method="POST">
-                  <div class="form-group mb-3">
-                    <label class="field-label text-uppercase small font-weight-bold" style="color: var(--bh-primary); letter-spacing: 1px;">{{ t('product_label') }}</label>
-                    <input class="glass-search" style="border-radius: 12px; height: 45px;" name="Name" value="{{ product.Name }}" required>
-                  </div>
-                  <div class="row">
-                    <div class="col-6 mb-3">
-                      <label class="field-label text-uppercase small font-weight-bold" style="color: var(--bh-primary); letter-spacing: 1px;">{{ t('valuation') }}</label>
-                      <input class="glass-search" style="border-radius: 12px; height: 45px;" name="Price" value="{{ product.Price }}" required>
-                    </div>
-                    <div class="col-6 mb-3">
-                      <label class="field-label text-uppercase small font-weight-bold" style="color: var(--bh-primary); letter-spacing: 1px;">{{ t('availability') }}</label>
-                      <input class="glass-search" style="border-radius: 12px; height: 45px;" name="Quantity" value="{{ product.Stock }}" required>
-                    </div>
-                  </div>
-                  <div class="form-group mb-3">
-                    <label class="field-label text-uppercase small font-weight-bold" style="color: var(--bh-primary); letter-spacing: 1px;">{{ t('artisanal_narrative') }}</label>
-                    <input class="glass-search" style="border-radius: 12px; height: 45px;" name="Description" value="{{ product.Description }}">
-                  </div>
-                  <div class="form-group mb-4">
-                    <label class="field-label text-uppercase small font-weight-bold" style="color: var(--bh-primary); letter-spacing: 1px;">{{ t('tags_help') }}</label>
-                    <input class="glass-search" style="border-radius: 12px; height: 45px;" name="Tags" value="{{ product.Tags|join(', ') }}">
-                  </div>
-                  <button type="submit" class="btn-luxury w-100 py-2 shadow-none">{{ t('save_changes') }}</button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
         {% endfor %}
       </tbody>
     </table>
   </div>
+  {% for product in products %}
+  <!-- Edit Modal for {{ product.Name }} -->
+  <div class="modal fade" id="editModal{{ product.ProductID }}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+        <div class="modal-header border-0 pb-0 px-4 pt-4">
+          <h5 class="modal-title font-weight-bold" style="font-family: 'Playfair Display', serif; color: var(--bh-primary);">{{ t('edit_title') }}: {{ product.Name }}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body px-4 pb-4">
+          <form action="{{ url_for('editProduct', vendor_id=vendor_id, product_id=product.ProductID) }}" method="POST">
+            <div class="form-group mb-3">
+              <label class="field-label text-uppercase small font-weight-bold" style="color: var(--bh-primary); letter-spacing: 1px;">{{ t('product_label') }}</label>
+              <input class="glass-search" style="border-radius: 12px; height: 45px;" name="Name" value="{{ product.Name }}" required>
+            </div>
+            <div class="row">
+              <div class="col-6 mb-3">
+                <label class="field-label text-uppercase small font-weight-bold" style="color: var(--bh-primary); letter-spacing: 1px;">{{ t('valuation') }}</label>
+                <input class="glass-search" style="border-radius: 12px; height: 45px;" name="Price" value="{{ product.Price }}" required>
+              </div>
+              <div class="col-6 mb-3">
+                <label class="field-label text-uppercase small font-weight-bold" style="color: var(--bh-primary); letter-spacing: 1px;">{{ t('availability') }}</label>
+                <input class="glass-search" style="border-radius: 12px; height: 45px;" name="Quantity" value="{{ product.Stock }}" required>
+              </div>
+            </div>
+            <div class="form-group mb-3">
+              <label class="field-label text-uppercase small font-weight-bold" style="color: var(--bh-primary); letter-spacing: 1px;">{{ t('artisanal_narrative') }}</label>
+              <input class="glass-search" style="border-radius: 12px; height: 45px;" name="Description" value="{{ product.Description }}">
+            </div>
+            <div class="form-group mb-4">
+              <label class="field-label text-uppercase small font-weight-bold" style="color: var(--bh-primary); letter-spacing: 1px;">{{ t('tags_help') }}</label>
+              <input class="glass-search" style="border-radius: 12px; height: 45px;" name="Tags" value="{{ product.Tags|join(', ') }}">
+            </div>
+            <button type="submit" class="btn-luxury w-100 py-2 shadow-none">{{ t('save_changes') }}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
   {% else %}
   <div class="frosted-box text-center py-5 border" style="background: var(--bh-bg);">
     <h3 class="form-title h4 mb-3">{{ t('empty_studio') }}</h3>
