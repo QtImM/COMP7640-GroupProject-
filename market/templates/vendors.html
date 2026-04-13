@@ -16,24 +16,21 @@
     <div class="market-grid">
       {% for vendor in vendors %}
       <article class="luxury-card h-100">
-        <!-- Studio Cover -->
-        <div class="img-container" style="height: 200px; position: relative;">
-          <img src="https://picsum.photos/600/400?seed={{ vendor.VendorID + 500 }}" alt="{{ vendor.BusinessName }}" style="filter: brightness(0.8);">
-          <div style="position: absolute; top: 15px; right: 15px;">
-              <span class="badge badge-bh-gold rounded-pill px-3 py-2 shadow-sm" style="background: var(--bh-gold); color: white; font-weight: 700;">
-                  ★ {% if vendor.AverageRating is not none %}{{ '%.1f'|format(vendor.AverageRating) }}{% else %}{{ t('new_label') }}{% endif %}
-              </span>
-          </div>
-        </div>
-
         <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="small text-uppercase text-muted" style="letter-spacing: 2px; font-weight: 700;">{{ t('discovery') }}</div>
+            <span class="badge badge-bh-gold rounded-pill px-3 py-2 shadow-sm" style="background: var(--bh-gold); color: white; font-weight: 700;">
+              ★ {% if vendor.AverageRating is not none %}{{ '%.1f'|format(vendor.AverageRating) }}{% else %}{{ t('new_label') }}{% endif %}
+            </span>
+          </div>
+
           <div class="d-flex align-items-center mb-3">
               <div class="studio-pfp mr-3" style="width: 45px; height: 45px; border-radius: 12px; background: var(--bh-primary); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-family: var(--font-heading);">
                   {{ vendor.BusinessName[0]|upper }}
               </div>
               <div>
                   <h3 class="product-name h5 mb-0" style="font-size: 1.4rem;">{{ vendor.BusinessName }}</h3>
-                  <span class="small text-muted"><img src="https://img.icons8.com/ios-glyphs/20/8B5A2B/marker.png" height="12"> {{ vendor.Location }}</span>
+                  <span class="small text-muted">{{ vendor.Location }}</span>
               </div>
           </div>
 
