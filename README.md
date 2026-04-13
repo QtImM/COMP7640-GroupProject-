@@ -22,23 +22,22 @@ The project currently supports these core flows:
 From repository root:
 
 ```powershell
-cd .\ECommerce-Grocery-Store
 py -m venv .venv
 .\.venv\Scripts\Activate.ps1
-pip install -r .\requirements.txt
+pip install -r requirements.txt
 
 mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS comp7640_marketplace CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-mysql -u root -p comp7640_marketplace < ..\bu-marketplace-stage1-schema.sql
-mysql -u root -p comp7640_marketplace < ..\bu-marketplace-stage2-sample-data.sql
+mysql -u root -p comp7640_marketplace < bu-marketplace-stage1-schema.sql
+mysql -u root -p comp7640_marketplace < bu-marketplace-stage2-sample-data.sql
 
-py .\run.py
+py run.py
 ```
 
 Then open `http://127.0.0.1:5000/`.
 
 ## database.yaml Template
 
-Create or update `ECommerce-Grocery-Store\database.yaml`:
+Create or update `database.yaml`:
 
 ```yaml
 mysql_host: "127.0.0.1"
@@ -83,8 +82,8 @@ Supplemental runtime table:
 
 Reference SQL files in repository root:
 
-- [`../bu-marketplace-stage1-schema.sql`](../bu-marketplace-stage1-schema.sql)
-- [`../bu-marketplace-stage2-sample-data.sql`](../bu-marketplace-stage2-sample-data.sql)
+- `bu-marketplace-stage1-schema.sql`
+- `bu-marketplace-stage2-sample-data.sql`
 
 ## Key Pages
 

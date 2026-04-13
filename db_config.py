@@ -6,7 +6,6 @@ import yaml
 def load_db_config():
     project_root = Path(__file__).resolve().parent
     candidate_paths = [
-        project_root / "ECommerce-Grocery-Store" / "database.yaml",
         project_root / "database.yaml",
         project_root / "database copy.yaml",
     ]

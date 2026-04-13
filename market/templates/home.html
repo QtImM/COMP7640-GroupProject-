@@ -16,6 +16,9 @@
           <input type="text" class="glass-search" placeholder="{{ t('search_placeholder') }}" name="q" value="{{ search_term }}">
           {% if vendor_filter_id %}<input type="hidden" name="vendor_id" value="{{ vendor_filter_id }}">{% endif %}
         </form>
+        <div class="mt-3">
+          <a href="{{ url_for('vendorListing') }}" class="btn btn-outline-dark rounded-pill px-4 py-2 font-weight-bold" style="border: 2px solid var(--bh-primary); color: var(--bh-primary);">{{ t('explore_studios') }}</a>
+        </div>
       </div>
     </div>
     <div class="col-lg-6 px-0">
