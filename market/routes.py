@@ -124,7 +124,7 @@ def _build_product_search_query():
 
 def get_marketplace_products(search_term=None, vendor_id=None):
     query = _build_product_search_query()
-    conditions = []
+    conditions = ["p.status = 'active'"]
     params = []
     if search_term:
         conditions.append("(LOWER(p.product_name) LIKE %s OR LOWER(pt.tag_value) LIKE %s)")
@@ -198,7 +198,8 @@ def get_vendor_products(vendor_id):
         FROM {MARKETPLACE_DB}.product AS p
         LEFT JOIN {MARKETPLACE_DB}.product_tag AS pt
             ON p.product_id = pt.product_id
-        WHERE p.vendor_id = %s
+                WHERE p.vendor_id = %s
+                    AND p.status = 'active'
         GROUP BY
             p.product_id,
             p.product_name,

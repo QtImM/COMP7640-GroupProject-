@@ -60,7 +60,7 @@
                 <td class="py-4 align-middle"><span class="badge badge-light border px-2 py-1">{{ item.Quantity }}</span></td>
                 <td class="py-4 align-middle font-weight-bold text-bh-primary">HK$ {{ item.Subtotal }}</td>
                 <td class="text-right pr-0 py-4 align-middle">
-                  {% if order.CanModify and item.Status != 'cancelled' %}
+                  {% if order.CanModify and item.Status == 'placed' %}
                   <form method="POST" action="/removeOrderItem/{{ user_id }}/{{ order.OrderID }}/{{ item.OrderItemID }}" class="m-0">
                     <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-4 font-weight-bold">{{ t('remove_item') }}</button>
                   </form>
